@@ -19,6 +19,7 @@ public class CustomerDBReal implements CustomerDB{
     private static final String CREATE_CUSTOMER = "insert into customer(name, email, address) values (?, ?, ?)";
     private static final String UPDATE_CUSTOMER = "update customer set name = ?,email= ?, address = ? where id = ?";
     private static final String SEARCH_BY_ID = "select * from customer where id = ?";
+    private static final String DELETE_CUSTOMER = "delete from customer where id = ?;";
 
     public CustomerDBReal() {
     }
@@ -70,26 +71,33 @@ public class CustomerDBReal implements CustomerDB{
 
     @Override
     public boolean update(int id, Customer customer) {
-        Customer c = search(id);
-        if (c != null) {
+//        Customer c = search(id);
+//        if (c != null) {
             try (Connection connection = getConnection();
                  PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_CUSTOMER)) {
-
                 preparedStatement.setString(1, customer.getName());
                 preparedStatement.setString(2, customer.getEmail());
                 preparedStatement.setString(3, customer.getAddress());
-                preparedStatement.setInt(4, customer.getId());
+                preparedStatement.setInt(4, id);
                 preparedStatement.executeUpdate();
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
+//        }
         return false;
     }
 
     @Override
     public boolean delete(int id) {
+        try (Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(DELETE_CUSTOMER)){
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
