@@ -34,7 +34,7 @@
     <table>
         <tr>
             <td>
-                <input type="submit" value="sort by country" name="sort">
+                <input type="submit" value="sort by name" name="sort">
             </td>
         </tr>
     </table>
