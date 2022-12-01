@@ -2,6 +2,7 @@ package controller;
 
 import model.Customer;
 import service.CustomerDB;
+import service.CustomerDBReal;
 import service.CustomerDBTest;
 
 import javax.servlet.*;
@@ -14,7 +15,7 @@ import java.util.List;
 @WebServlet(name = "CustomerServlet", value = "/customers")
 public class CustomerServlet extends HttpServlet {
     public static final int TOTAL_PER_PAGE = 5;
-    private CustomerDB customerDB = new CustomerDBTest();
+    private final CustomerDB customerDB = new CustomerDBReal();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -81,14 +82,15 @@ public class CustomerServlet extends HttpServlet {
     }
 
     private void showListCustomer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sort = request.getParameter("sort");
         String search = request.getParameter("search");
         List<Customer> customerList;
-        if (search == null) {
+        if (search == null && sort == null) {
             customerList = this.customerDB.findAll();
-
-        } else {
-             customerList = this.customerDB.searchByName(search);
-
+        } else if (search != null) {
+            customerList = this.customerDB.searchByName(search);
+        } else  {
+            customerList = this.customerDB.sortByName();
         }
 
         String pageIds = request.getParameter("page");
@@ -157,8 +159,6 @@ public class CustomerServlet extends HttpServlet {
         Customer customerUpdate = new Customer(id, name, address, email);
         customerDB.update(id, customerUpdate);
         response.sendRedirect("/customers");
-
-
     }
 
     private void createCustomer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

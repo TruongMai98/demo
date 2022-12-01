@@ -17,13 +17,12 @@
 <h1>Customer list</h1>
 <p>
     <a href="/customers?action=create">Create new customer</a>
-    <link rel="stylesheet" href="sb-admin-2.css">
 </p>
 <form action="" method="get">
     <table>
         <tr>
             <td>
-                <input type="text" name="search" placeholder="Search">
+                <input type="text" name="search" placeholder="Search by name">
             </td>
             <td>
                 <input type="submit" value="Search">
@@ -31,7 +30,16 @@
         </tr>
     </table>
 </form>
-<table id="table_id" class="display">
+<form action="" method="get">
+    <table>
+        <tr>
+            <td>
+                <input type="submit" value="sort by country" name="sort">
+            </td>
+        </tr>
+    </table>
+</form>
+<table border="1">
     <tr>
         <td>Id</td>
         <td>Name</td>
@@ -42,19 +50,14 @@
     </tr>
     <c:forEach items="${requestScope['customers']}" var="cus">
         <tr>
-            <td>
-                    ${cus.getId()}
-            </td>
+            <td>${cus.getId()}</td>
             <td>
                 <a href="/customers?action=view&id=${cus.getId()}">
                         ${cus.getName()}
                 </a>
             </td>
-            <td>
-                    ${cus.getEmail()}
-            </td>
-            <td>
-                    ${cus.getAddress()}
+            <td>${cus.getEmail()}</td>
+            <td>${cus.getAddress()}
             </td>
             <td>
                 <a href="/customers?action=edit&id=${cus.getId()}">

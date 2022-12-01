@@ -16,4 +16,5 @@ public interface CustomerDB {
     Customer search(int id);
 
     List<Customer> searchByName(String name);
+    List<Customer> sortByName();
 }

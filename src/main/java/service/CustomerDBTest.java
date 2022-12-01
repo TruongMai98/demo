@@ -92,4 +92,9 @@ public class CustomerDBTest implements CustomerDB{
         }
         return newCustomer;
     }
+
+    @Override
+    public List<Customer> sortByName() {
+        return null;
+    }
 }
